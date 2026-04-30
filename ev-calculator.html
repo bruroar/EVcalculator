@@ -4,127 +4,91 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EV Savings Calculator | Turo</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900;1,9..40,400&display=swap" rel="stylesheet">
 
   <style>
-    /* ── Turo colour tokens ─────────────────────────────── */
+    /* ── Turo design tokens ─────────────────────────────── */
     :root {
-      --bg:          #F7F5FF;      /* page background – very pale lavender */
-      --card-lilac:  #D9CEFF;      /* main result cards */
-      --card-soft:   #EDE8FF;      /* secondary cards */
-      --card-white:  #FFFFFF;      /* input card */
-      --purple:      #7B61FF;      /* brand purple */
-      --purple-dk:   #5B3DE8;      /* hover / darker */
-      --purple-lt:   #EDE8FF;      /* very light purple */
-      --text:        #1A1035;      /* headlines */
-      --text-med:    #4A3B7A;      /* body on lilac */
-      --text-muted:  #9287BE;      /* labels / captions */
-      --border:      #DDD5FF;      /* subtle borders */
-      --green:       #1DB87A;
+      --alpha:       #231f20;
+      --alpha-light: #312b2d;
+      --alpha-dark:  #161314;
+      --alpha-pale:  #cfc9ca;
+      --beta:        #593cfb;
+      --beta-light:  #6e55fc;
+      --beta-dark:   #4323fb;
+      --beta-pale:   #aa9bfd;
+      --light:       #e8e8e9;
+      --light-light: #f5f5f5;
+      --light-dark:  #dbdbdc;
+      --light-pale:  #cbcbcd;
+      --dark:        #231f20;
+      --dark-light:  #312b2d;
+      --dark-dark:   #161314;
+      --dark-pale:   #cfc9ca;
+      --black:       #000;
+      --white:       #fff;
+      --off-white:   #f2f2f2;
+      --border:      #ccc;
+      --success:     #62b51f;
+      --warning:     #e4be4c;
+      --error:       #c82727;
+      --body-font:   "Turo Sans", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --title-font:  "Turo Sans", Georgia, Times, "Times New Roman", serif;
+
+      /* Local aliases */
+      --hero-bg:     rgba(89, 60, 251, 0.09);  /* --beta at ~9% on white */
+      --hero-bg-neg: rgba(200, 39, 39,  0.08); /* --error tint */
     }
 
     /* ── Reset ──────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 28px 20px 48px;
+      font-family: var(--body-font);
+      background: var(--off-white);
+      color: var(--alpha);
+      padding: 20px 16px 40px;
     }
 
-    /* ── Constrain to 588 px ────────────────────────────── */
     .wrap {
       max-width: 588px;
       margin: 0 auto;
     }
 
-    /* ── Header ─────────────────────────────────────────── */
-    .header {
-      margin-bottom: 28px;
-    }
-
-    .turo-logo {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      margin-bottom: 14px;
-    }
-
-    .turo-logo-mark {
-      width: 28px;
-      height: 28px;
-      background: var(--purple);
-      border-radius: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 14px;
-      color: #fff;
-      letter-spacing: -0.5px;
-    }
-
-    .turo-logo-text {
-      font-size: 15px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      color: var(--text);
-    }
-
-    .header h1 {
-      font-size: 30px;
-      font-weight: 800;
-      letter-spacing: -0.6px;
-      line-height: 1.15;
-      color: var(--text);
-      margin-bottom: 8px;
-    }
-
-    .header p {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.55;
-    }
-
     /* ── Unit toggle ─────────────────────────────────────── */
     .unit-toggle {
       display: inline-flex;
-      background: var(--card-soft);
+      background: var(--light-dark);
       border-radius: 40px;
       padding: 3px;
       gap: 2px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .unit-btn {
-      padding: 7px 20px;
+      padding: 6px 18px;
       border-radius: 40px;
       border: none;
       background: transparent;
-      font-family: 'DM Sans', sans-serif;
+      font-family: var(--body-font);
       font-size: 13px;
       font-weight: 600;
-      color: var(--text-muted);
+      color: var(--alpha-pale);
       cursor: pointer;
       transition: background 0.18s, color 0.18s;
     }
 
     .unit-btn.active {
-      background: var(--purple);
-      color: #fff;
+      background: var(--beta);
+      color: var(--white);
     }
 
     /* ── Input card ──────────────────────────────────────── */
     .input-card {
-      background: var(--card-white);
+      background: var(--white);
       border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 26px 24px 28px;
-      margin-bottom: 14px;
+      border-radius: 20px;
+      padding: 24px 22px 26px;
+      margin-bottom: 12px;
     }
 
     .section-eyebrow {
@@ -132,47 +96,43 @@
       font-weight: 700;
       letter-spacing: 1.4px;
       text-transform: uppercase;
-      color: var(--purple);
-      margin-bottom: 22px;
+      color: var(--beta);
+      margin-bottom: 20px;
     }
 
     .divider {
       height: 1px;
-      background: var(--border);
-      margin: 22px 0;
-      opacity: 0.6;
+      background: var(--light-dark);
+      margin: 20px 0;
     }
 
     /* ── Slider group ────────────────────────────────────── */
-    .slider-group {
-      margin-bottom: 20px;
-    }
-
+    .slider-group        { margin-bottom: 18px; }
     .slider-group:last-child { margin-bottom: 0; }
 
     .sl-top {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 11px;
+      margin-bottom: 10px;
     }
 
     .sl-label {
       font-size: 14px;
       font-weight: 600;
-      color: var(--text);
+      color: var(--alpha);
     }
 
     .sl-value {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 800;
-      color: var(--purple);
+      color: var(--beta);
     }
 
-    /* Range input — fully custom */
+    /* Range — custom track + fill + avg tick */
     .range-wrap {
       position: relative;
-      height: 28px;
+      height: 26px;
       display: flex;
       align-items: center;
     }
@@ -189,13 +149,13 @@
       z-index: 2;
     }
 
-    /* Track — rendered via a pseudo-element underneath */
     .range-track {
       position: absolute;
-      left: 0;
-      right: 0;
+      inset: 0;
       height: 4px;
-      background: var(--border);
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--light-dark);
       border-radius: 2px;
       z-index: 0;
     }
@@ -203,23 +163,23 @@
     .range-fill {
       position: absolute;
       left: 0;
+      top: 50%;
+      transform: translateY(-50%);
       height: 4px;
-      background: var(--purple);
+      background: var(--beta);
       border-radius: 2px;
       z-index: 1;
       pointer-events: none;
-      transition: width 0.05s;
     }
 
-    /* Avg tick mark */
+    /* Avg tick — thin vertical mark */
     .avg-tick {
       position: absolute;
       top: 50%;
       transform: translate(-50%, -50%);
-      width: 3px;
-      height: 10px;
-      background: var(--purple);
-      opacity: 0.35;
+      width: 2px;
+      height: 12px;
+      background: var(--beta-pale);
       border-radius: 2px;
       z-index: 3;
       pointer-events: none;
@@ -227,292 +187,165 @@
 
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 24px;
-      height: 24px;
-      background: var(--purple);
+      width: 22px;
+      height: 22px;
+      background: var(--beta);
       border-radius: 50%;
       cursor: pointer;
-      border: 3px solid #fff;
-      box-shadow: 0 2px 10px rgba(123, 97, 255, 0.45);
+      border: 3px solid var(--white);
+      box-shadow: 0 2px 8px rgba(89, 60, 251, 0.40);
       position: relative;
       z-index: 4;
     }
 
     input[type="range"]::-moz-range-thumb {
-      width: 24px;
-      height: 24px;
-      background: var(--purple);
+      width: 22px;
+      height: 22px;
+      background: var(--beta);
       border-radius: 50%;
       cursor: pointer;
-      border: 3px solid #fff;
-      box-shadow: 0 2px 10px rgba(123, 97, 255, 0.45);
+      border: 3px solid var(--white);
+      box-shadow: 0 2px 8px rgba(89, 60, 251, 0.40);
     }
 
     .sl-footer {
       display: flex;
       justify-content: space-between;
-      margin-top: 7px;
+      margin-top: 6px;
     }
 
-    .sl-min-max {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
+    .sl-min-max  { font-size: 11px; color: var(--alpha-pale); }
 
     .sl-avg-label {
       font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 500;
+      color: var(--alpha-pale);
     }
 
     .sl-avg-label strong {
-      color: var(--purple);
+      color: var(--beta);
       font-weight: 700;
     }
 
-    /* ── Results ─────────────────────────────────────────── */
-
-    /* Hero savings card */
+    /* ── Hero result ─────────────────────────────────────── */
     .result-hero {
-      background: var(--card-lilac);
-      border-radius: 28px;
-      padding: 32px 28px 28px;
+      background: var(--hero-bg);
+      border: 1px solid rgba(89, 60, 251, 0.15);
+      border-radius: 20px;
+      padding: 28px 24px 24px;
       text-align: center;
-      margin-bottom: 12px;
       position: relative;
       overflow: hidden;
+      transition: background 0.3s, border-color 0.3s;
     }
 
-    .result-hero::before {
-      content: '';
-      position: absolute;
-      top: -48px;
-      right: -48px;
-      width: 160px;
-      height: 160px;
-      background: rgba(123,97,255,0.10);
-      border-radius: 50%;
-    }
-
+    /* Decorative blobs */
+    .result-hero::before,
     .result-hero::after {
       content: '';
       position: absolute;
-      bottom: -56px;
-      left: -32px;
-      width: 180px;
-      height: 180px;
-      background: rgba(123,97,255,0.07);
       border-radius: 50%;
+      pointer-events: none;
+    }
+    .result-hero::before {
+      width: 140px; height: 140px;
+      top: -50px; right: -40px;
+      background: rgba(89, 60, 251, 0.08);
+    }
+    .result-hero::after {
+      width: 160px; height: 160px;
+      bottom: -60px; left: -40px;
+      background: rgba(89, 60, 251, 0.05);
     }
 
     .result-eyebrow {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
-      letter-spacing: 1.2px;
+      letter-spacing: 1.4px;
       text-transform: uppercase;
-      color: var(--text-med);
+      color: var(--beta);
       margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
     }
 
     .result-big {
-      font-size: 72px;
+      font-family: var(--title-font);
+      font-size: 68px;
       font-weight: 900;
       letter-spacing: -3px;
       line-height: 1;
-      color: var(--purple);
+      color: var(--beta);
       position: relative;
       z-index: 1;
     }
 
     .result-big .sym {
-      font-size: 38px;
+      font-size: 36px;
       font-weight: 800;
-      vertical-align: 14px;
-      margin-right: 2px;
+      vertical-align: 12px;
+      margin-right: 1px;
       letter-spacing: -1px;
     }
 
-    .result-per-month {
+    .result-sub {
       font-size: 14px;
       font-weight: 500;
-      color: var(--text-med);
+      color: var(--alpha-light);
       margin-top: 8px;
+      position: relative;
+      z-index: 1;
     }
 
-    .result-per-month strong {
-      font-weight: 700;
-      color: var(--purple-dk);
-    }
-
-    /* 2-col metric grid */
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .metric-card {
-      background: var(--card-soft);
-      border-radius: 22px;
-      padding: 20px 22px;
-    }
-
-    .metric-card.accent {
-      background: var(--card-lilac);
-    }
-
-    .m-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
-    .m-value {
-      font-size: 24px;
-      font-weight: 900;
-      letter-spacing: -0.8px;
-      color: var(--text);
-    }
-
-    .metric-card.accent .m-value {
-      color: var(--purple);
-    }
-
-    .m-sub {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 3px;
-      font-weight: 400;
-    }
-
-    /* CO2 card */
-    .co2-card {
-      background: var(--card-soft);
-      border-radius: 22px;
-      padding: 20px 22px;
-      margin-bottom: 10px;
-    }
-
-    .co2-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 12px;
-    }
-
-    .co2-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    .co2-val {
-      font-size: 14px;
+    .result-sub strong {
       font-weight: 800;
-      color: var(--green);
+      color: var(--beta-dark);
     }
 
-    .co2-track {
-      height: 6px;
-      background: var(--border);
-      border-radius: 4px;
-      overflow: hidden;
+    /* Negative state */
+    .result-hero.negative {
+      background: var(--hero-bg-neg);
+      border-color: rgba(200, 39, 39, 0.15);
     }
+    .result-hero.negative::before { background: rgba(200,39,39,0.06); }
+    .result-hero.negative::after  { background: rgba(200,39,39,0.04); }
+    .result-hero.negative .result-eyebrow { color: var(--error); }
+    .result-hero.negative .result-big     { color: var(--error); }
+    .result-hero.negative .result-sub strong { color: var(--error); }
 
-    .co2-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--green), #56E0A0);
-      border-radius: 4px;
-      transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
-    }
-
-    .co2-captions {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 7px;
-    }
-
-    .co2-captions span {
-      font-size: 10px;
-      color: var(--text-muted);
-    }
-
-    /* Per-mile row */
-    .info-row {
-      background: var(--card-soft);
-      border-radius: 22px;
-      padding: 16px 22px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .info-row .ir-label {
-      font-size: 13px;
-      color: var(--text-med);
-      font-weight: 500;
-    }
-
-    .info-row .ir-val {
-      font-size: 15px;
-      font-weight: 800;
-      color: var(--purple);
-    }
-
-    /* Negative savings */
-    .result-hero.negative .result-big { color: #C04040; }
-    .result-hero.negative { background: #F9DEDE; }
-
-    /* Footer note */
+    /* ── Footnote ────────────────────────────────────────── */
     .footnote {
       font-size: 10px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-top: 24px;
-      padding-top: 18px;
-      border-top: 1px solid var(--border);
+      color: var(--alpha-pale);
+      line-height: 1.65;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--light-dark);
     }
   </style>
 </head>
 <body>
 <div class="wrap">
 
-  <!-- Header -->
-  <div class="header">
-    <div class="turo-logo">
-      <div class="turo-logo-mark">T</div>
-      <span class="turo-logo-text">turo</span>
-    </div>
-    <h1>EV Savings<br>Calculator</h1>
-    <p>See how much you could save in fuel costs by switching to an electric vehicle.</p>
-  </div>
-
   <!-- Unit toggle -->
   <div class="unit-toggle">
     <button class="unit-btn active" id="btn-miles" onclick="setUnit('miles')">Miles</button>
-    <button class="unit-btn" id="btn-km"    onclick="setUnit('km')">Km</button>
+    <button class="unit-btn"        id="btn-km"    onclick="setUnit('km')">Km</button>
   </div>
 
   <!-- ── Inputs ── -->
   <div class="input-card">
+
     <div class="section-eyebrow">Your Driving Habits</div>
 
-    <!-- Distance -->
     <div class="slider-group">
       <div class="sl-top">
-        <span class="sl-label" id="dist-lbl">Distance per week</span>
+        <span class="sl-label">Distance per week</span>
         <span class="sl-value" id="dist-val">263 mi</span>
       </div>
       <div class="range-wrap">
         <div class="range-track"></div>
         <div class="range-fill" id="fill-dist"></div>
-        <div class="avg-tick"  id="tick-dist"></div>
+        <div class="avg-tick"   id="tick-dist"></div>
         <input type="range" id="distance" min="50" max="600" value="263" step="1" oninput="updateCalc()">
       </div>
       <div class="sl-footer">
@@ -522,7 +355,6 @@
       </div>
     </div>
 
-    <!-- Gas price -->
     <div class="slider-group">
       <div class="sl-top">
         <span class="sl-label">Gas price</span>
@@ -531,7 +363,7 @@
       <div class="range-wrap">
         <div class="range-track"></div>
         <div class="range-fill" id="fill-gas"></div>
-        <div class="avg-tick"  id="tick-gas"></div>
+        <div class="avg-tick"   id="tick-gas"></div>
         <input type="range" id="gasPrice" min="1.50" max="7.50" value="3.10" step="0.01" oninput="updateCalc()">
       </div>
       <div class="sl-footer">
@@ -544,7 +376,6 @@
     <div class="divider"></div>
     <div class="section-eyebrow">Your Current Gas Car</div>
 
-    <!-- MPG -->
     <div class="slider-group">
       <div class="sl-top">
         <span class="sl-label">Fuel economy</span>
@@ -553,7 +384,7 @@
       <div class="range-wrap">
         <div class="range-track"></div>
         <div class="range-fill" id="fill-mpg"></div>
-        <div class="avg-tick"  id="tick-mpg"></div>
+        <div class="avg-tick"   id="tick-mpg"></div>
         <input type="range" id="mpg" min="12" max="55" value="28" step="1" oninput="updateCalc()">
       </div>
       <div class="sl-footer">
@@ -566,7 +397,6 @@
     <div class="divider"></div>
     <div class="section-eyebrow">Your Electric Vehicle</div>
 
-    <!-- EV Efficiency -->
     <div class="slider-group">
       <div class="sl-top">
         <span class="sl-label">EV efficiency</span>
@@ -575,7 +405,7 @@
       <div class="range-wrap">
         <div class="range-track"></div>
         <div class="range-fill" id="fill-eff"></div>
-        <div class="avg-tick"  id="tick-eff"></div>
+        <div class="avg-tick"   id="tick-eff"></div>
         <input type="range" id="evEff" min="20" max="65" value="34" step="0.5" oninput="updateCalc()">
       </div>
       <div class="sl-footer">
@@ -585,7 +415,6 @@
       </div>
     </div>
 
-    <!-- Electricity rate -->
     <div class="slider-group">
       <div class="sl-top">
         <span class="sl-label">Electricity rate</span>
@@ -594,7 +423,7 @@
       <div class="range-wrap">
         <div class="range-track"></div>
         <div class="range-fill" id="fill-elec"></div>
-        <div class="avg-tick"  id="tick-elec"></div>
+        <div class="avg-tick"   id="tick-elec"></div>
         <input type="range" id="elecRate" min="0.07" max="0.42" value="0.17" step="0.005" oninput="updateCalc()">
       </div>
       <div class="sl-footer">
@@ -603,78 +432,30 @@
         <span class="sl-min-max">$0.42</span>
       </div>
     </div>
+
   </div><!-- /input-card -->
 
-
-  <!-- ── Results ── -->
-
-  <!-- Hero -->
+  <!-- ── Hero result ── -->
   <div class="result-hero" id="result-hero">
     <div class="result-eyebrow" id="hero-eyebrow">Annual EV Savings</div>
-    <div class="result-big" id="hero-amount">
+    <div class="result-big">
       <span class="sym">$</span><span id="hero-num">708</span>
     </div>
-    <div class="result-per-month" id="hero-sub">
+    <div class="result-sub" id="hero-sub">
       That's <strong id="monthly-num">$59</strong> saved every month
     </div>
   </div>
 
-  <!-- 2-col grid -->
-  <div class="metrics-grid">
-    <div class="metric-card">
-      <div class="m-label">Gas Car / Year</div>
-      <div class="m-value" id="m-gas">$1,512</div>
-      <div class="m-sub">Annual fuel cost</div>
-    </div>
-    <div class="metric-card">
-      <div class="m-label">EV / Year</div>
-      <div class="m-value" id="m-ev">$804</div>
-      <div class="m-sub">Annual charging cost</div>
-    </div>
-    <div class="metric-card accent">
-      <div class="m-label">5-Year Savings</div>
-      <div class="m-value" id="m-5yr">$3,540</div>
-      <div class="m-sub">Without price changes</div>
-    </div>
-    <div class="metric-card accent">
-      <div class="m-label">Savings / Mile</div>
-      <div class="m-value" id="m-mile">$0.052</div>
-      <div class="m-sub">Per mile driven</div>
-    </div>
-  </div>
-
-  <!-- CO2 -->
-  <div class="co2-card">
-    <div class="co2-top">
-      <span class="co2-label">🌱 CO₂ Avoided Per Year</span>
-      <span class="co2-val" id="co2-val">2,507 kg</span>
-    </div>
-    <div class="co2-track">
-      <div class="co2-fill" id="co2-fill" style="width:58%"></div>
-    </div>
-    <div class="co2-captions">
-      <span>0 kg</span>
-      <span id="co2-max-cap">4,332 kg (gas car)</span>
-    </div>
-  </div>
-
-  <!-- Per-mile info -->
-  <div class="info-row">
-    <span class="ir-label">Equivalent gas savings per mile</span>
-    <span class="ir-val" id="ir-permile">5.2¢ cheaper per mile</span>
-  </div>
-
   <!-- Footnote -->
   <p class="footnote">
-    Defaults: 13,662 mi/yr (FHWA avg) · 28 MPG fleet avg (EPA 2024) · $3.10/gal national avg (AAA/EIA 2025) · 34.6 kWh/100mi avg EV (EV Database) · $0.17/kWh national avg electricity (EIA 2025) · CO₂: 8.887 kg/gal gas; EV grid 0.386 kg/kWh (EPA eGRID).
+    Defaults: 13,662 mi/yr (FHWA) · 28 MPG fleet avg (EPA 2024) · $3.10/gal national avg (AAA/EIA 2025) · 34.6 kWh/100mi avg EV (EV Database) · $0.17/kWh national avg electricity (EIA 2025).
   </p>
 
 </div><!-- /wrap -->
 
 <script>
-  /* ── Constants ──────────────────────────────────── */
   const AVGS = {
-    distance: { miles: 263, km: 423 },  // 13,662 mi/yr ÷ 52
+    distance: { miles: 263, km: 423 },
     gasPrice: 3.10,
     mpg:      28,
     evEff:    34.6,
@@ -683,53 +464,44 @@
 
   let unit = 'miles';
 
-  /* ── Unit toggle ────────────────────────────────── */
   function setUnit(u) {
     unit = u;
     document.getElementById('btn-miles').classList.toggle('active', u === 'miles');
     document.getElementById('btn-km').classList.toggle('active',    u === 'km');
 
-    const sl = document.getElementById('distance');
+    const sl  = document.getElementById('distance');
     const cur = parseFloat(sl.value);
 
     if (u === 'km') {
       sl.min = 80; sl.max = 965; sl.step = 1;
       sl.value = Math.round(cur * 1.60934);
-      document.getElementById('dist-min').textContent  = '80 km';
-      document.getElementById('dist-max').textContent  = '965 km';
-      document.getElementById('avg-dist-lbl').textContent = '423 km';
+      document.getElementById('dist-min').textContent      = '80 km';
+      document.getElementById('dist-max').textContent      = '965 km';
+      document.getElementById('avg-dist-lbl').textContent  = '423 km';
     } else {
       sl.min = 50; sl.max = 600; sl.step = 1;
       sl.value = Math.round(cur / 1.60934);
-      document.getElementById('dist-min').textContent  = '50 mi';
-      document.getElementById('dist-max').textContent  = '600 mi';
-      document.getElementById('avg-dist-lbl').textContent = '263 mi';
+      document.getElementById('dist-min').textContent      = '50 mi';
+      document.getElementById('dist-max').textContent      = '600 mi';
+      document.getElementById('avg-dist-lbl').textContent  = '263 mi';
     }
     updateCalc();
   }
 
-  /* ── Slider fill + avg tick ─────────────────────── */
-  function positionFillAndTick(id, fillId, tickId, avgVal) {
+  function syncSlider(id, fillId, tickId, avgVal) {
     const sl   = document.getElementById(id);
     const fill = document.getElementById(fillId);
     const tick = document.getElementById(tickId);
+    const min  = parseFloat(sl.min);
+    const max  = parseFloat(sl.max);
+    const val  = parseFloat(sl.value);
 
-    const min = parseFloat(sl.min);
-    const max = parseFloat(sl.max);
-    const val = parseFloat(sl.value);
-
-    const pct    = (val - min)    / (max - min) * 100;
-    const avgPct = (avgVal - min) / (max - min) * 100;
-
-    fill.style.width = `${pct}%`;
-    tick.style.left  = `${Math.max(0, Math.min(100, avgPct))}%`;
+    fill.style.width = `${(val - min) / (max - min) * 100}%`;
+    tick.style.left  = `${Math.max(0, Math.min(100, (avgVal - min) / (max - min) * 100))}%`;
   }
 
-  /* ── Formatting helpers ─────────────────────────── */
-  const fmtInt  = n => Math.round(Math.abs(n)).toLocaleString('en-US');
-  const fmtSign = n => (n >= 0 ? '' : '−');
+  const fmtN = n => Math.round(Math.abs(n)).toLocaleString('en-US');
 
-  /* ── Main calc ──────────────────────────────────── */
   function updateCalc() {
     const distSlider = parseFloat(document.getElementById('distance').value);
     const gasPrice   = parseFloat(document.getElementById('gasPrice').value);
@@ -737,72 +509,41 @@
     const evEff      = parseFloat(document.getElementById('evEff').value);
     const elecRate   = parseFloat(document.getElementById('elecRate').value);
 
-    /* Convert to miles for all calculations */
     const milesPerWeek = unit === 'km' ? distSlider / 1.60934 : distSlider;
     const milesPerYear = milesPerWeek * 52;
 
-    const gasCost = (milesPerYear / mpg) * gasPrice;
-    const evCost  = milesPerYear * (evEff / 100) * elecRate;
-    const savings = gasCost - evCost;
+    const gasCost  = (milesPerYear / mpg) * gasPrice;
+    const evCost   = milesPerYear * (evEff / 100) * elecRate;
+    const savings  = gasCost - evCost;
     const perMonth = savings / 12;
-    const perMile  = savings / milesPerYear;
 
-    /* CO2 */
-    const gasCO2 = (milesPerYear / mpg) * 8.887;
-    const evCO2  = milesPerYear * (evEff / 100) * 0.386;
-    const co2Saved = gasCO2 - evCO2;
-    const co2Pct   = Math.max(0, Math.min(100, (co2Saved / gasCO2) * 100));
+    /* Slider decorations */
+    const dAvg = unit === 'km' ? AVGS.distance.km : AVGS.distance.miles;
+    syncSlider('distance', 'fill-dist', 'tick-dist', dAvg);
+    syncSlider('gasPrice', 'fill-gas',  'tick-gas',  AVGS.gasPrice);
+    syncSlider('mpg',      'fill-mpg',  'tick-mpg',  AVGS.mpg);
+    syncSlider('evEff',    'fill-eff',  'tick-eff',  AVGS.evEff);
+    syncSlider('elecRate', 'fill-elec', 'tick-elec', AVGS.elecRate);
 
-    /* ── Update slider decorations ── */
-    const distAvgVal = unit === 'km' ? AVGS.distance.km : AVGS.distance.miles;
-    positionFillAndTick('distance', 'fill-dist', 'tick-dist', distAvgVal);
-    positionFillAndTick('gasPrice', 'fill-gas',  'tick-gas',  AVGS.gasPrice);
-    positionFillAndTick('mpg',      'fill-mpg',  'tick-mpg',  AVGS.mpg);
-    positionFillAndTick('evEff',    'fill-eff',  'tick-eff',  AVGS.evEff);
-    positionFillAndTick('elecRate', 'fill-elec', 'tick-elec', AVGS.elecRate);
-
-    /* ── Update value labels ── */
-    const distUnit = unit === 'miles' ? 'mi' : 'km';
-    document.getElementById('dist-val').textContent  = `${fmtInt(distSlider)} ${distUnit}`;
+    /* Value labels */
+    const du = unit === 'miles' ? 'mi' : 'km';
+    document.getElementById('dist-val').textContent  = `${fmtN(distSlider)} ${du}`;
     document.getElementById('gas-val').textContent   = `$${gasPrice.toFixed(2)} / gal`;
     document.getElementById('mpg-val').textContent   = `${mpg} MPG`;
     document.getElementById('eff-val').textContent   = `${evEff.toFixed(1)} kWh / 100 mi`;
     document.getElementById('elec-val').textContent  = `$${elecRate.toFixed(3)} / kWh`;
 
-    /* ── Hero result ── */
+    /* Hero */
     const hero = document.getElementById('result-hero');
     hero.classList.toggle('negative', savings < 0);
 
-    document.getElementById('hero-eyebrow').textContent =
-      savings >= 0 ? 'Annual EV Savings' : 'Annual EV Extra Cost';
-    document.getElementById('hero-num').textContent = fmtInt(savings);
-    document.getElementById('monthly-num').textContent =
-      `${fmtSign(perMonth)}$${fmtInt(perMonth)}`;
-    document.getElementById('hero-sub').innerHTML =
-      savings >= 0
-        ? `That's <strong id="monthly-num">$${fmtInt(perMonth)}</strong> saved every month`
-        : `EV costs <strong>$${fmtInt(Math.abs(perMonth))}</strong> more per month than gas`;
-
-    /* ── Metric cards ── */
-    document.getElementById('m-gas').textContent  = `$${fmtInt(gasCost)}`;
-    document.getElementById('m-ev').textContent   = `$${fmtInt(evCost)}`;
-    document.getElementById('m-5yr').textContent  = `${fmtSign(savings)}$${fmtInt(savings * 5)}`;
-    document.getElementById('m-mile').textContent = `$${Math.abs(perMile).toFixed(3)}`;
-
-    /* ── CO2 ── */
-    document.getElementById('co2-val').textContent     = `${fmtInt(co2Saved)} kg`;
-    document.getElementById('co2-fill').style.width    = `${co2Pct}%`;
-    document.getElementById('co2-max-cap').textContent = `${fmtInt(gasCO2)} kg (gas car)`;
-
-    /* ── Per-mile row ── */
-    const cpm = Math.abs(perMile * 100);
-    document.getElementById('ir-permile').textContent =
-      savings >= 0
-        ? `${cpm.toFixed(1)}¢ cheaper per mile`
-        : `${cpm.toFixed(1)}¢ more expensive per mile`;
+    document.getElementById('hero-eyebrow').textContent = savings >= 0 ? 'Annual EV Savings' : 'Annual EV Extra Cost';
+    document.getElementById('hero-num').textContent     = fmtN(savings);
+    document.getElementById('hero-sub').innerHTML       = savings >= 0
+      ? `That's <strong>$${fmtN(perMonth)}</strong> saved every month`
+      : `EV costs <strong>$${fmtN(Math.abs(perMonth))}</strong> more per month than gas`;
   }
 
-  /* Init on load */
   updateCalc();
 </script>
 </body>
