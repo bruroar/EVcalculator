@@ -6,7 +6,6 @@
   <title>EV Savings Calculator | Turo</title>
 
   <style>
-    /* ── Turo design tokens ─────────────────────────────── */
     :root {
       --alpha:       #231f20;
       --alpha-light: #312b2d;
@@ -20,33 +19,24 @@
       --light-light: #f5f5f5;
       --light-dark:  #dbdbdc;
       --light-pale:  #cbcbcd;
-      --dark:        #231f20;
-      --dark-light:  #312b2d;
-      --dark-dark:   #161314;
-      --dark-pale:   #cfc9ca;
-      --black:       #000;
       --white:       #fff;
       --off-white:   #f2f2f2;
       --border:      #ccc;
-      --success:     #62b51f;
-      --warning:     #e4be4c;
       --error:       #c82727;
       --body-font:   "Turo Sans", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
       --title-font:  "Turo Sans", Georgia, Times, "Times New Roman", serif;
 
-      /* Local aliases */
-      --hero-bg:     rgba(89, 60, 251, 0.09);  /* --beta at ~9% on white */
-      --hero-bg-neg: rgba(200, 39, 39,  0.08); /* --error tint */
+      --hero-bg:     rgba(89, 60, 251, 0.09);
+      --hero-bg-neg: rgba(200, 39, 39,  0.08);
     }
 
-    /* ── Reset ──────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: var(--body-font);
       background: var(--off-white);
       color: var(--alpha);
-      padding: 20px 16px 40px;
+      padding: 16px 16px 32px;
     }
 
     .wrap {
@@ -54,85 +44,97 @@
       margin: 0 auto;
     }
 
-    /* ── Unit toggle ─────────────────────────────────────── */
-    .unit-toggle {
-      display: inline-flex;
-      background: var(--light-dark);
-      border-radius: 40px;
-      padding: 3px;
-      gap: 2px;
-      margin-bottom: 16px;
-    }
-
-    .unit-btn {
-      padding: 6px 18px;
-      border-radius: 40px;
-      border: none;
-      background: transparent;
-      font-family: var(--body-font);
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--alpha-pale);
-      cursor: pointer;
-      transition: background 0.18s, color 0.18s;
-    }
-
-    .unit-btn.active {
-      background: var(--beta);
-      color: var(--white);
-    }
-
     /* ── Input card ──────────────────────────────────────── */
     .input-card {
       background: var(--white);
       border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 24px 22px 26px;
-      margin-bottom: 12px;
+      padding: 20px 20px 22px;
+      margin-bottom: 10px;
     }
 
+    /* Eyebrow — section label */
     .section-eyebrow {
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 700;
       letter-spacing: 1.4px;
       text-transform: uppercase;
       color: var(--beta);
-      margin-bottom: 20px;
+      margin-bottom: 14px;
     }
 
     .divider {
       height: 1px;
       background: var(--light-dark);
-      margin: 20px 0;
+      margin: 16px 0;
     }
 
     /* ── Slider group ────────────────────────────────────── */
-    .slider-group        { margin-bottom: 18px; }
+    .slider-group        { margin-bottom: 14px; }
     .slider-group:last-child { margin-bottom: 0; }
 
     .sl-top {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 10px;
+      align-items: center;
+      margin-bottom: 9px;
+      gap: 8px;
+    }
+
+    /* Label + optional inline toggle */
+    .sl-label-group {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-shrink: 0;
     }
 
     .sl-label {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--alpha);
+      white-space: nowrap;
+    }
+
+    /* Inline mi/km pill */
+    .unit-mini {
+      display: inline-flex;
+      background: var(--light-dark);
+      border-radius: 20px;
+      padding: 2px;
+      gap: 1px;
+    }
+
+    .um-btn {
+      padding: 2px 9px;
+      border-radius: 20px;
+      border: none;
+      background: transparent;
+      font-family: var(--body-font);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--alpha-pale);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      line-height: 1.6;
+    }
+
+    .um-btn.active {
+      background: var(--beta);
+      color: var(--white);
     }
 
     .sl-value {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
       color: var(--beta);
+      white-space: nowrap;
     }
 
-    /* Range — custom track + fill + avg tick */
+    /* Range — custom */
     .range-wrap {
       position: relative;
-      height: 26px;
+      height: 24px;
       display: flex;
       align-items: center;
     }
@@ -172,13 +174,12 @@
       pointer-events: none;
     }
 
-    /* Avg tick — thin vertical mark */
     .avg-tick {
       position: absolute;
       top: 50%;
       transform: translate(-50%, -50%);
       width: 2px;
-      height: 12px;
+      height: 11px;
       background: var(--beta-pale);
       border-radius: 2px;
       z-index: 3;
@@ -193,7 +194,7 @@
       border-radius: 50%;
       cursor: pointer;
       border: 3px solid var(--white);
-      box-shadow: 0 2px 8px rgba(89, 60, 251, 0.40);
+      box-shadow: 0 2px 8px rgba(89, 60, 251, 0.38);
       position: relative;
       z-index: 4;
     }
@@ -205,40 +206,46 @@
       border-radius: 50%;
       cursor: pointer;
       border: 3px solid var(--white);
-      box-shadow: 0 2px 8px rgba(89, 60, 251, 0.40);
+      box-shadow: 0 2px 8px rgba(89, 60, 251, 0.38);
     }
 
     .sl-footer {
       display: flex;
       justify-content: space-between;
-      margin-top: 6px;
+      margin-top: 5px;
     }
 
-    .sl-min-max  { font-size: 11px; color: var(--alpha-pale); }
+    .sl-min-max   { font-size: 10px; color: var(--alpha-pale); }
+    .sl-avg-label { font-size: 10px; color: var(--alpha-pale); }
+    .sl-avg-label strong { color: var(--beta); font-weight: 700; }
 
-    .sl-avg-label {
-      font-size: 11px;
-      color: var(--alpha-pale);
+    /* ── EV two-column grid ──────────────────────────────── */
+    .ev-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
     }
 
-    .sl-avg-label strong {
-      color: var(--beta);
-      font-weight: 700;
-    }
+    .ev-grid .slider-group { margin-bottom: 0; }
+
+    /* Tighter labels inside ev-grid */
+    .ev-grid .sl-label  { font-size: 12px; }
+    .ev-grid .sl-value  { font-size: 12px; }
+    .ev-grid .sl-min-max,
+    .ev-grid .sl-avg-label { font-size: 9px; }
 
     /* ── Hero result ─────────────────────────────────────── */
     .result-hero {
       background: var(--hero-bg);
       border: 1px solid rgba(89, 60, 251, 0.15);
       border-radius: 20px;
-      padding: 28px 24px 24px;
+      padding: 24px 22px 20px;
       text-align: center;
       position: relative;
       overflow: hidden;
       transition: background 0.3s, border-color 0.3s;
     }
 
-    /* Decorative blobs */
     .result-hero::before,
     .result-hero::after {
       content: '';
@@ -247,32 +254,32 @@
       pointer-events: none;
     }
     .result-hero::before {
-      width: 140px; height: 140px;
-      top: -50px; right: -40px;
+      width: 120px; height: 120px;
+      top: -44px; right: -36px;
       background: rgba(89, 60, 251, 0.08);
     }
     .result-hero::after {
-      width: 160px; height: 160px;
-      bottom: -60px; left: -40px;
+      width: 140px; height: 140px;
+      bottom: -52px; left: -32px;
       background: rgba(89, 60, 251, 0.05);
     }
 
     .result-eyebrow {
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 700;
       letter-spacing: 1.4px;
       text-transform: uppercase;
       color: var(--beta);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       position: relative;
       z-index: 1;
     }
 
     .result-big {
       font-family: var(--title-font);
-      font-size: 68px;
+      font-size: 62px;
       font-weight: 900;
-      letter-spacing: -3px;
+      letter-spacing: -2.5px;
       line-height: 1;
       color: var(--beta);
       position: relative;
@@ -280,18 +287,17 @@
     }
 
     .result-big .sym {
-      font-size: 36px;
+      font-size: 32px;
       font-weight: 800;
-      vertical-align: 12px;
+      vertical-align: 11px;
       margin-right: 1px;
-      letter-spacing: -1px;
     }
 
     .result-sub {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       color: var(--alpha-light);
-      margin-top: 8px;
+      margin-top: 7px;
       position: relative;
       z-index: 1;
     }
@@ -301,24 +307,21 @@
       color: var(--beta-dark);
     }
 
-    /* Negative state */
-    .result-hero.negative {
-      background: var(--hero-bg-neg);
-      border-color: rgba(200, 39, 39, 0.15);
-    }
+    /* Negative */
+    .result-hero.negative { background: var(--hero-bg-neg); border-color: rgba(200,39,39,0.15); }
     .result-hero.negative::before { background: rgba(200,39,39,0.06); }
     .result-hero.negative::after  { background: rgba(200,39,39,0.04); }
-    .result-hero.negative .result-eyebrow { color: var(--error); }
-    .result-hero.negative .result-big     { color: var(--error); }
+    .result-hero.negative .result-eyebrow,
+    .result-hero.negative .result-big { color: var(--error); }
     .result-hero.negative .result-sub strong { color: var(--error); }
 
     /* ── Footnote ────────────────────────────────────────── */
     .footnote {
-      font-size: 10px;
+      font-size: 9px;
       color: var(--alpha-pale);
       line-height: 1.65;
-      margin-top: 16px;
-      padding-top: 14px;
+      margin-top: 12px;
+      padding-top: 12px;
       border-top: 1px solid var(--light-dark);
     }
   </style>
@@ -326,20 +329,21 @@
 <body>
 <div class="wrap">
 
-  <!-- Unit toggle -->
-  <div class="unit-toggle">
-    <button class="unit-btn active" id="btn-miles" onclick="setUnit('miles')">Miles</button>
-    <button class="unit-btn"        id="btn-km"    onclick="setUnit('km')">Km</button>
-  </div>
-
   <!-- ── Inputs ── -->
   <div class="input-card">
 
     <div class="section-eyebrow">Your Driving Habits</div>
 
+    <!-- Distance — toggle lives here -->
     <div class="slider-group">
       <div class="sl-top">
-        <span class="sl-label">Distance per week</span>
+        <div class="sl-label-group">
+          <span class="sl-label">Distance per week</span>
+          <div class="unit-mini">
+            <button class="um-btn active" id="btn-miles" onclick="setUnit('miles')">mi</button>
+            <button class="um-btn"        id="btn-km"    onclick="setUnit('km')">km</button>
+          </div>
+        </div>
         <span class="sl-value" id="dist-val">263 mi</span>
       </div>
       <div class="range-wrap">
@@ -355,6 +359,7 @@
       </div>
     </div>
 
+    <!-- Gas price -->
     <div class="slider-group">
       <div class="sl-top">
         <span class="sl-label">Gas price</span>
@@ -376,6 +381,7 @@
     <div class="divider"></div>
     <div class="section-eyebrow">Your Current Gas Car</div>
 
+    <!-- MPG -->
     <div class="slider-group">
       <div class="sl-top">
         <span class="sl-label">Fuel economy</span>
@@ -397,41 +403,46 @@
     <div class="divider"></div>
     <div class="section-eyebrow">Your Electric Vehicle</div>
 
-    <div class="slider-group">
-      <div class="sl-top">
-        <span class="sl-label">EV efficiency</span>
-        <span class="sl-value" id="eff-val">34 kWh / 100 mi</span>
-      </div>
-      <div class="range-wrap">
-        <div class="range-track"></div>
-        <div class="range-fill" id="fill-eff"></div>
-        <div class="avg-tick"   id="tick-eff"></div>
-        <input type="range" id="evEff" min="20" max="65" value="34" step="0.5" oninput="updateCalc()">
-      </div>
-      <div class="sl-footer">
-        <span class="sl-min-max">20 (efficient)</span>
-        <span class="sl-avg-label">US avg <strong>34.6</strong></span>
-        <span class="sl-min-max">65 (truck)</span>
-      </div>
-    </div>
+    <!-- EV: two sliders side by side -->
+    <div class="ev-grid">
 
-    <div class="slider-group">
-      <div class="sl-top">
-        <span class="sl-label">Electricity rate</span>
-        <span class="sl-value" id="elec-val">$0.170 / kWh</span>
+      <div class="slider-group">
+        <div class="sl-top">
+          <span class="sl-label">Efficiency</span>
+          <span class="sl-value" id="eff-val">34 kWh</span>
+        </div>
+        <div class="range-wrap">
+          <div class="range-track"></div>
+          <div class="range-fill" id="fill-eff"></div>
+          <div class="avg-tick"   id="tick-eff"></div>
+          <input type="range" id="evEff" min="20" max="65" value="34" step="0.5" oninput="updateCalc()">
+        </div>
+        <div class="sl-footer">
+          <span class="sl-min-max">20</span>
+          <span class="sl-avg-label">avg <strong>34.6</strong></span>
+          <span class="sl-min-max">65</span>
+        </div>
       </div>
-      <div class="range-wrap">
-        <div class="range-track"></div>
-        <div class="range-fill" id="fill-elec"></div>
-        <div class="avg-tick"   id="tick-elec"></div>
-        <input type="range" id="elecRate" min="0.07" max="0.42" value="0.17" step="0.005" oninput="updateCalc()">
+
+      <div class="slider-group">
+        <div class="sl-top">
+          <span class="sl-label">Elec. rate</span>
+          <span class="sl-value" id="elec-val">$0.17</span>
+        </div>
+        <div class="range-wrap">
+          <div class="range-track"></div>
+          <div class="range-fill" id="fill-elec"></div>
+          <div class="avg-tick"   id="tick-elec"></div>
+          <input type="range" id="elecRate" min="0.07" max="0.42" value="0.17" step="0.005" oninput="updateCalc()">
+        </div>
+        <div class="sl-footer">
+          <span class="sl-min-max">$0.07</span>
+          <span class="sl-avg-label">avg <strong>$0.17</strong></span>
+          <span class="sl-min-max">$0.42</span>
+        </div>
       </div>
-      <div class="sl-footer">
-        <span class="sl-min-max">$0.07</span>
-        <span class="sl-avg-label">US avg <strong>$0.17</strong></span>
-        <span class="sl-min-max">$0.42</span>
-      </div>
-    </div>
+
+    </div><!-- /ev-grid -->
 
   </div><!-- /input-card -->
 
@@ -442,7 +453,7 @@
       <span class="sym">$</span><span id="hero-num">708</span>
     </div>
     <div class="result-sub" id="hero-sub">
-      That's <strong id="monthly-num">$59</strong> saved every month
+      That's <strong>$59</strong> saved every month
     </div>
   </div>
 
@@ -451,7 +462,7 @@
     Defaults: 13,662 mi/yr (FHWA) · 28 MPG fleet avg (EPA 2024) · $3.10/gal national avg (AAA/EIA 2025) · 34.6 kWh/100mi avg EV (EV Database) · $0.17/kWh national avg electricity (EIA 2025).
   </p>
 
-</div><!-- /wrap -->
+</div>
 
 <script>
   const AVGS = {
@@ -475,29 +486,24 @@
     if (u === 'km') {
       sl.min = 80; sl.max = 965; sl.step = 1;
       sl.value = Math.round(cur * 1.60934);
-      document.getElementById('dist-min').textContent      = '80 km';
-      document.getElementById('dist-max').textContent      = '965 km';
-      document.getElementById('avg-dist-lbl').textContent  = '423 km';
+      document.getElementById('dist-min').textContent     = '80 km';
+      document.getElementById('dist-max').textContent     = '965 km';
+      document.getElementById('avg-dist-lbl').textContent = '423 km';
     } else {
       sl.min = 50; sl.max = 600; sl.step = 1;
       sl.value = Math.round(cur / 1.60934);
-      document.getElementById('dist-min').textContent      = '50 mi';
-      document.getElementById('dist-max').textContent      = '600 mi';
-      document.getElementById('avg-dist-lbl').textContent  = '263 mi';
+      document.getElementById('dist-min').textContent     = '50 mi';
+      document.getElementById('dist-max').textContent     = '600 mi';
+      document.getElementById('avg-dist-lbl').textContent = '263 mi';
     }
     updateCalc();
   }
 
   function syncSlider(id, fillId, tickId, avgVal) {
-    const sl   = document.getElementById(id);
-    const fill = document.getElementById(fillId);
-    const tick = document.getElementById(tickId);
-    const min  = parseFloat(sl.min);
-    const max  = parseFloat(sl.max);
-    const val  = parseFloat(sl.value);
-
-    fill.style.width = `${(val - min) / (max - min) * 100}%`;
-    tick.style.left  = `${Math.max(0, Math.min(100, (avgVal - min) / (max - min) * 100))}%`;
+    const sl  = document.getElementById(id);
+    const min = parseFloat(sl.min), max = parseFloat(sl.max), val = parseFloat(sl.value);
+    document.getElementById(fillId).style.width = `${(val - min) / (max - min) * 100}%`;
+    document.getElementById(tickId).style.left  = `${Math.max(0, Math.min(100, (avgVal - min) / (max - min) * 100))}%`;
   }
 
   const fmtN = n => Math.round(Math.abs(n)).toLocaleString('en-US');
@@ -517,26 +523,24 @@
     const savings  = gasCost - evCost;
     const perMonth = savings / 12;
 
-    /* Slider decorations */
-    const dAvg = unit === 'km' ? AVGS.distance.km : AVGS.distance.miles;
-    syncSlider('distance', 'fill-dist', 'tick-dist', dAvg);
+    // Slider decorations
+    syncSlider('distance', 'fill-dist', 'tick-dist', unit === 'km' ? AVGS.distance.km : AVGS.distance.miles);
     syncSlider('gasPrice', 'fill-gas',  'tick-gas',  AVGS.gasPrice);
     syncSlider('mpg',      'fill-mpg',  'tick-mpg',  AVGS.mpg);
     syncSlider('evEff',    'fill-eff',  'tick-eff',  AVGS.evEff);
     syncSlider('elecRate', 'fill-elec', 'tick-elec', AVGS.elecRate);
 
-    /* Value labels */
+    // Value labels
     const du = unit === 'miles' ? 'mi' : 'km';
     document.getElementById('dist-val').textContent  = `${fmtN(distSlider)} ${du}`;
     document.getElementById('gas-val').textContent   = `$${gasPrice.toFixed(2)} / gal`;
     document.getElementById('mpg-val').textContent   = `${mpg} MPG`;
-    document.getElementById('eff-val').textContent   = `${evEff.toFixed(1)} kWh / 100 mi`;
-    document.getElementById('elec-val').textContent  = `$${elecRate.toFixed(3)} / kWh`;
+    document.getElementById('eff-val').textContent   = `${evEff.toFixed(1)} kWh`;
+    document.getElementById('elec-val').textContent  = `$${elecRate.toFixed(3)}`;
 
-    /* Hero */
+    // Hero
     const hero = document.getElementById('result-hero');
     hero.classList.toggle('negative', savings < 0);
-
     document.getElementById('hero-eyebrow').textContent = savings >= 0 ? 'Annual EV Savings' : 'Annual EV Extra Cost';
     document.getElementById('hero-num').textContent     = fmtN(savings);
     document.getElementById('hero-sub').innerHTML       = savings >= 0
@@ -548,3 +552,4 @@
 </script>
 </body>
 </html>
+
